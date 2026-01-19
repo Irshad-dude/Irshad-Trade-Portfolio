@@ -121,7 +121,7 @@ function setupNavigation() {
 // Data Persistence (API API)
 async function loadState() {
     try {
-        const response = await fetch('/data/store.json');
+        const response = await fetch('/api/data');
         if (!response.ok) throw new Error('Failed to fetch data');
         const data = await response.json();
 
@@ -147,7 +147,7 @@ async function saveState() {
             profile: state.profile
         };
 
-        await fetch('/data/store.json', {
+        await fetch('/api/data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
