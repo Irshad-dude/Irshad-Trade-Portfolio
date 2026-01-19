@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Forex Trader Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Admin Specific Overrides for Standalone Page */
+        body {
+            padding-top: 0;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-nav {
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-wrapper {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Admin Navigation -->
+    <nav class="admin-nav">
+        <a href="index.html" class="logo">IRSHAD<span class="gold-dot">.</span> <span class="text-small text-gray"
+                style="margin-left: 10px; font-weight: 400;">Admin Portal</span></a>
+        <div>
+            <a href="index.html" class="btn btn-sm btn-outline" style="margin-right: 10px;">Back to Site</a>
+            <button id="logoutBtn" class="btn btn-sm btn-outline btn-danger-hover"
+                style="display: none;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="admin-wrapper">
+
+        <!-- Login Section -->
+        <div id="loginSection" class="login-container glass">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <h2 style="font-size: 1.8rem;">Admin Login</h2>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="admin@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login to Dashboard</button>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="admin-dashboard glass" style="display: none;">
+            <div class="dashboard-header">
+                <h3><i class="fa-solid fa-gauge-high text-gold"></i> Admin Dashboard</h3>
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" data-tab="analysis">New Trade Entry</button>
+                    <button class="tab-btn" data-tab="profile">Profile Photo</button>
+                </div>
+            </div>
+
+            <!-- Tab 1: Analysis Upload (Matching Index.html) -->
+            <div id="tab-analysis" class="dashboard-tab-content active">
+                <form id="uploadForm">
+                    <div class="upload-grid-advanced">
+                        <!-- Left Col: Images -->
+                        <div class="upload-images-col">
+                            <label class="text-gold mb-2 block">1. Before Entry <span
+                                    class="text-gray text-small">(Required)</span></label>
+                            <div class="upload-zone small-zone" id="dropZoneBefore">
+                                <i class="fa-solid fa-image text-gray"></i>
+                                <p class="text-small">Drag 'Before' Chart</p>
+                                <input type="file" id="fileInputBefore" accept="image/*" hidden>
+                                <div id="previewBefore" class="preview-mini"></div>
+                            </div>
+
+                            <label class="text-gold mb-2 block mt-2">2. After Result <span
+                                    class="text-gray text-small">(Optional)</span></label>
+                            <div class="upload-zone small-zone" id="dropZoneAfter">
+                                <i class="fa-solid fa-flag-checkered text-gray"></i>
+                                <p class="text-small">Drag 'After' Chart</p>
+                                <input type="file" id="fileInputAfter" accept="image/*" hidden>
+                                <div id="previewAfter" class="preview-mini"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Col: Metadata -->
+                        <div class="upload-meta-col">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Instrument</label>
+                                    <select id="tradeInstrument">
+                                        <option value="XAUUSD">Gold (XAUUSD)</option>
+                                        <option value="BTCUSD">Bitcoin (BTCUSD)</option>
+                                        <option value="EURUSD">EURUSD</option>
+                                        <option value="GBPUSD">GBPUSD</option>
+                                        <option value="US30">US30</option>
+                                        <option value="NAS100">NAS100</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Timeframe</label>
+                                    <select id="tradeTimeframe">
+                                        <option value="M1">M1</option>
+                                        <option value="M5">M5</option>
+                                        <option value="M15">M15</option>
+                                        <option value="H1">H1</option>
+                                        <option value="H4">H4</option>
+                                        <option value="D1">Daily</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Model / Category</label>
+                                    <select id="tradeCategory">
+                                        <option value="Order Blocks">Order Blocks</option>
+                                        <option value="FVG">Fair Value Gaps (FVG)</option>
+                                        <option value="SMC Confirmations">SMC Confirmations</option>
+                                        <option value="BOS">Break of Structure (BOS)</option>
+                                        <option value="Liquidity Grabs">Liquidity Grabs</option>
+                                        <option value="Supply & Demand">Supply & Demand</option>
+                                        <option value="Institutional Candles">Institutional Candles</option>
+                                        <option value="Rejection">Rejection & Failed Trades</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Direction</label>
+                                    <select id="tradeDirection">
+                                        <option value="Buy">Long (Buy)</option>
+                                        <option value="Sell">Short (Sell)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Risk:Reward</label>
+                                    <input type="text" id="tradeRR" placeholder="e.g. 1:3">
+                                </div>
+                                <div class="form-group">
+                                    <label>Outcome</label>
+                                    <select id="tradeOutcome">
+                                        <option value="Win">Win</option>
+                                        <option value="Loss">Loss</option>
+                                        <option value="BE">Break Even</option>
+                                        <option value="Pending">Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Confidence</label>
+                                <div class="star-rating">
+                                    <input type="radio" name="confidence" value="5" id="c5"><label for="c5">★</label>
+                                    <input type="radio" name="confidence" value="4" id="c4"><label for="c4">★</label>
+                                    <input type="radio" name="confidence" value="3" id="c3" checked><label
+                                        for="c3">★</label>
+                                    <input type="radio" name="confidence" value="2" id="c2"><label for="c2">★</label>
+                                    <input type="radio" name="confidence" value="1" id="c1"><label for="c1">★</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Notes / Confluence</label>
+                                <textarea id="tradeNotes" rows="3"
+                                    placeholder="Liquidity sweep confirmed, entered on retest..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Log Trade Entry</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 2: Profile Management -->
+            <div id="tab-profile" class="dashboard-tab-content">
+                <div class="profile-manager-grid">
+                    <div class="current-profile-preview">
+                        <h4>Current Profile</h4>
+                        <div class="profile-preview-circle">
+                            <img id="currentProfileImg" src="" alt="Current Profile" class="profile-img-display">
+                        </div>
+                        <button id="removeProfileBtn" class="btn btn-sm btn-outline btn-danger-hover">Remove
+                            Photo</button>
+                    </div>
+                    <div class="new-profile-upload">
+                        <h4>Upload New Photo</h4>
+                        <div class="upload-zone small-zone" id="profileDropZone">
+                            <i class="fa-solid fa-camera fa-2x text-gray"></i>
+                            <p>Drag & Drop or Browse</p>
+                            <label for="profileInput" class="btn btn-sm btn-primary">Select Image</label>
+                            <input type="file" id="profileInput" accept="image/jpeg, image/png, image/webp" hidden>
+                        </div>
+                        <p class="text-small text-gray mt-2">JPG, PNG, WEBP (Max 10MB)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/admin.js"></script>
+</body>
+
+</html>

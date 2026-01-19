@@ -5,6 +5,20 @@
     },
     "trades": [
         {
+            "id": "1768828601564",
+            "instrument": "XAUUSD",
+            "timeframe": "M1",
+            "category": "Order Blocks",
+            "direction": "Buy",
+            "outcome": "Win",
+            "rr": "",
+            "notes": "test",
+            "confidence": "3",
+            "date": "2026-01-19",
+            "imageBefore": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768828600/Trade/klqka1ptv4ak1zq9duru.png",
+            "imageAfter": null
+        },
+        {
             "id": "1768822436975",
             "instrument": "XAUUSD",
             "timeframe": "M1",

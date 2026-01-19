@@ -1,0 +1,122 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs').promises;
+
+const app = express();
+const PORT = 8123;
+const DATA_FILE = path.join(__dirname, 'data', 'store.json');
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+
+// Set EJS as template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Static files
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+// Helper function to read store data
+async function readStore() {
+    try {
+        const data = await fs.readFile(DATA_FILE, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error('Error reading store:', error);
+        return { trades: [], profile: {} };
+    }
+}
+
+// Helper function to write store data
+async function writeStore(data) {
+    try {
+        await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 4));
+        return true;
+    } catch (error) {
+        console.error('Error writing store:', error);
+        throw error;
+    }
+}
+
+// Routes
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
+app.get('/admin', (req, res) => {
+    res.render('admin');
+});
+
+// API: Get data
+app.get('/api/data', async (req, res) => {
+    try {
+        const data = await readStore();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to read data' });
+    }
+});
+
+// API: Save data
+app.post('/api/data', async (req, res) => {
+    try {
+        await writeStore(req.body);
+        res.json({ status: 'success' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to save data' });
+    }
+});
+
+// API: Store image URL
+app.post('/store/image', async (req, res) => {
+    try {
+        const { imageUrl, tradeId } = req.body;
+
+        if (!imageUrl) {
+            return res.status(400).json({ error: 'imageUrl is required' });
+        }
+
+        const data = await readStore();
+
+        // If tradeId is provided, update specific trade
+        if (tradeId) {
+            const trade = data.trades.find(t => t.id === tradeId);
+            if (trade) {
+                trade.imageBefore = imageUrl;
+            } else {
+                return res.status(404).json({ error: 'Trade not found' });
+            }
+        } else {
+            // Otherwise, create a new entry with just the image
+            const newEntry = {
+                id: Date.now().toString(),
+                imageUrl: imageUrl,
+                timestamp: new Date().toISOString()
+            };
+            data.trades.unshift(newEntry);
+        }
+
+        await writeStore(data);
+        res.json({
+            status: 'success',
+            message: 'Image URL stored successfully',
+            data: data
+        });
+    } catch (error) {
+        console.error('Error storing image:', error);
+        res.status(500).json({ error: 'Failed to store image URL' });
+    }
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`📊 API endpoint: http://localhost:${PORT}/api/data`);
+    console.log(`🖼️  Image store: http://localhost:${PORT}/store/image`);
+});
