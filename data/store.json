@@ -1,0 +1,76 @@
+{
+    "profile": {
+        "name": "Irshad Sheikh",
+        "photo": null
+    },
+    "trades": [
+        {
+            "id": "1768822436975",
+            "instrument": "XAUUSD",
+            "timeframe": "M1",
+            "category": "Order Blocks",
+            "direction": "Buy",
+            "outcome": "Win",
+            "rr": "1:3",
+            "notes": "Test3",
+            "confidence": "3",
+            "date": "2026-01-19",
+            "imageBefore": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768822433/Trade/vnakdbezpdnvlag8eakt.png",
+            "imageAfter": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768822436/Trade/aod9jfj8agqhtuyki2bd.png"
+        },
+        {
+            "id": "1768822155965",
+            "instrument": "XAUUSD",
+            "timeframe": "M1",
+            "category": "Order Blocks",
+            "direction": "Buy",
+            "outcome": "Win",
+            "rr": "1:2",
+            "notes": "test1",
+            "confidence": "3",
+            "date": "2026-01-19",
+            "imageBefore": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768822152/Trade/sxukiwuobxquppkidz9d.png",
+            "imageAfter": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768822155/Trade/iycdpfnb0ehmxrlkv92z.png"
+        },
+        {
+            "id": "1768822081741",
+            "instrument": "TEST_PAIR",
+            "timeframe": "M1",
+            "category": "Order Blocks",
+            "direction": "Buy",
+            "outcome": "Win",
+            "rr": "1:2",
+            "notes": "Test upload - 1768821659834",
+            "confidence": "3",
+            "date": "2026-01-19",
+            "imageBefore": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768822072/Trade/nyuxlmm0pbkrakk6ymiy.png",
+            "imageAfter": "https://res.cloudinary.com/dooo6u0qc/image/upload/v1768822081/Trade/eyskehvqluxel0vxpadq.png"
+        },
+        {
+            "id": 1,
+            "instrument": "XAUUSD",
+            "timeframe": "M15",
+            "category": "Order Blocks",
+            "direction": "Buy",
+            "rr": "1:4",
+            "outcome": "Win",
+            "confidence": 5,
+            "notes": "Classic liquidity sweep followed by a change of character. Entered on the FVG retest.",
+            "imageBefore": null,
+            "date": "2024-12-28"
+        },
+        {
+            "id": 2,
+            "instrument": "BTCUSD",
+            "timeframe": "H4",
+            "category": "Order Blocks",
+            "direction": "Sell",
+            "rr": "1:3",
+            "outcome": "Loss",
+            "confidence": 3,
+            "notes": "Price tapped into H4 order block but failed to reject. Stop loss hit.",
+            "imageBefore": null,
+            "date": "2024-12-25"
+        }
+    ]
+}
