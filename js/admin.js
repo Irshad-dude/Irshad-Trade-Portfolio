@@ -226,12 +226,12 @@ function setupProfileUpload() {
                 const url = await CloudinaryService.uploadImage(file);
 
                 // Update State via API
-                const response = await fetch('/api/data');
+                const response = await fetch('/data/store.json');
                 const data = await response.json();
 
                 data.profile = { photo: url, name: 'Irshad Sheikh' }; // Update profile
 
-                await fetch('/api/data', {
+                await fetch('/data/store.json', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -254,12 +254,12 @@ function setupProfileUpload() {
         if (confirm('Remove profile photo?')) {
             try {
                 // Fetch current data first
-                const response = await fetch('/api/data');
+                const response = await fetch('/data/store.json');
                 const data = await response.json();
 
                 data.profile.photo = null;
 
-                await fetch('/api/data', {
+                await fetch('/data/store.json', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -276,7 +276,7 @@ function setupProfileUpload() {
 
 async function loadProfile() {
     try {
-        const response = await fetch('/api/data');
+        const response = await fetch('/data/store.json');
         const data = await response.json();
         const profile = data.profile || {};
 
@@ -291,13 +291,13 @@ async function loadProfile() {
 // Shared Data Logic
 async function saveTrade(trade) {
     try {
-        const response = await fetch('/api/data');
+        const response = await fetch('/data/store.json');
         const data = await response.json();
         const trades = data.trades || [];
 
         trades.unshift(trade);
 
-        await fetch('/api/data', {
+        await fetch('/data/store.json', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...data, trades })

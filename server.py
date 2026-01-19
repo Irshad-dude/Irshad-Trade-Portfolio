@@ -8,7 +8,7 @@ DATA_FILE = 'data/store.json'
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/api/data':
+        if self.path == '/data/store.json':
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
@@ -27,7 +27,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             return http.server.SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
-        if self.path == '/api/data':
+        if self.path == '/data/store.json':
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             
@@ -58,7 +58,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
 print(f"Serving at http://localhost:{PORT}")
-print(f"API Endpoint: http://localhost:{PORT}/api/data")
+print(f"API Endpoint: http://localhost:{PORT}/data/store.json")
 
 with socketserver.TCPServer(("", PORT), CustomHandler) as httpd:
     httpd.serve_forever()
