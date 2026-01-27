@@ -1,16 +1,19 @@
 /**
- * JSONBin Service
+ * JSONBin Service (SERVER-SIDE ONLY)
  * Handles global data persistence via JSONBin.io
- * This is the single source of truth for trades and profile data
+ * This module runs on the Express server and keeps the Master Key secure
+ * 
+ * NOTE: This file uses CommonJS (module.exports) for Node.js/Express
+ * Frontend code should use api-client.js instead
  */
 
 const BIN_ID = '6978977c43b1c97be94e3010';
 const BASE_URL = 'https://api.jsonbin.io/v3/b';
 
-// JSONBin Master Key for authentication
+// JSONBin Master Key for authentication (SERVER-SIDE ONLY - Never exposed to browser)
 const MASTER_KEY = '$2a$10$6EbpRNeA3IAJTO.mEUrVFO7VfarJwZOkkasbiAd6yhtn.wTO7aC/m';
 
-export const JSONBinService = {
+const JSONBinService = {
     /**
      * Fetches the latest data from JSONBin
      * @returns {Promise<Object>} { profile: {...}, trades: [...] }
@@ -96,3 +99,6 @@ export const JSONBinService = {
         return MASTER_KEY && !MASTER_KEY.includes('YOUR_MASTER_KEY_HERE');
     }
 };
+
+// Export for Node.js/Express (CommonJS)
+module.exports = { JSONBinService };

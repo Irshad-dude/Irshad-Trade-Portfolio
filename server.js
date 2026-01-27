@@ -122,6 +122,43 @@ app.post('/store/image', async (req, res) => {
     }
 });
 
+// ============================================
+// JSONBin Proxy Routes (Server-Side Secure)
+// ============================================
+// These routes keep the Master Key secure on the server
+// and allow the frontend to interact with JSONBin safely
+// ============================================
+
+const { JSONBinService } = require('./js/jsonbin-service.js');
+
+// GET: Fetch data from JSONBin (via backend)
+app.get('/api/jsonbin/data', async (req, res) => {
+    try {
+        const data = await JSONBinService.fetchData();
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching from JSONBin:', error);
+        res.status(500).json({
+            error: 'Failed to fetch data from JSONBin',
+            message: error.message
+        });
+    }
+});
+
+// PUT: Save data to JSONBin (via backend)
+app.put('/api/jsonbin/data', async (req, res) => {
+    try {
+        await JSONBinService.saveData(req.body);
+        res.json({ status: 'success' });
+    } catch (error) {
+        console.error('Error saving to JSONBin:', error);
+        res.status(500).json({
+            error: 'Failed to save data to JSONBin',
+            message: error.message
+        });
+    }
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);

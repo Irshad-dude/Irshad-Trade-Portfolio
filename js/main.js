@@ -3,7 +3,7 @@
  * Recreated to restore functionality
  */
 import { CloudinaryService } from './cloudinary-service.js';
-import { JSONBinService } from './jsonbin-service.js';
+import { APIClient } from './api-client.js';
 
 // State Management
 const state = {
@@ -119,18 +119,18 @@ function setupNavigation() {
     });
 }
 
-// Data Persistence (JSONBin Global Storage)
+// Data Persistence (Backend API)
 async function loadState() {
     try {
-        // Fetch from JSONBin (global data source)
-        const data = await JSONBinService.fetchData();
+        // Fetch from backend API (which talks to JSONBin)
+        const data = await APIClient.fetchData();
 
         state.trades = data.trades || [];
         state.profile = data.profile || { name: 'Irshad Sheikh', photo: null };
 
-        console.log(`✅ Loaded ${state.trades.length} trades from JSONBin`);
+        console.log(`✅ Loaded ${state.trades.length} trades from backend`);
     } catch (error) {
-        console.error('Error loading state from JSONBin:', error);
+        console.error('Error loading state from backend:', error);
         // Fallback to empty state
         state.trades = [];
         state.profile = { name: 'Irshad Sheikh', photo: null };
@@ -144,12 +144,12 @@ async function saveState() {
             profile: state.profile
         };
 
-        // Save to JSONBin (global persistence)
-        await JSONBinService.saveData(payload);
-        console.log('✅ State saved to JSONBin globally');
+        // Save to backend API (which saves to JSONBin)
+        await APIClient.saveData(payload);
+        console.log('✅ State saved globally via backend');
     } catch (error) {
-        console.error('Error saving state to JSONBin:', error);
-        alert('Warning: Failed to save data to JSONBin');
+        console.error('Error saving state to backend:', error);
+        alert('Warning: Failed to save data to backend');
     }
 }
 
