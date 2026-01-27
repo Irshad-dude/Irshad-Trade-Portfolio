@@ -3,6 +3,7 @@
  * Recreated to restore functionality
  */
 import { CloudinaryService } from './cloudinary-service.js';
+import { JSONBinService } from './jsonbin-service.js';
 
 // State Management
 const state = {
@@ -118,25 +119,21 @@ function setupNavigation() {
     });
 }
 
-// Data Persistence (API API)
+// Data Persistence (JSONBin Global Storage)
 async function loadState() {
     try {
-        const response = await fetch('/api/data');
-        if (!response.ok) throw new Error('Failed to fetch data');
-        const data = await response.json();
+        // Fetch from JSONBin (global data source)
+        const data = await JSONBinService.fetchData();
 
         state.trades = data.trades || [];
         state.profile = data.profile || { name: 'Irshad Sheikh', photo: null };
 
-        // Seed data if truly empty (first run)
-        if (state.trades.length === 0 && !localStorage.getItem('seeded')) {
-            seedDummyData();
-            localStorage.setItem('seeded', 'true');
-        }
+        console.log(`✅ Loaded ${state.trades.length} trades from JSONBin`);
     } catch (error) {
-        console.error('Error loading state:', error);
+        console.error('Error loading state from JSONBin:', error);
         // Fallback to empty state
         state.trades = [];
+        state.profile = { name: 'Irshad Sheikh', photo: null };
     }
 }
 
@@ -147,14 +144,12 @@ async function saveState() {
             profile: state.profile
         };
 
-        await fetch('/api/data', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+        // Save to JSONBin (global persistence)
+        await JSONBinService.saveData(payload);
+        console.log('✅ State saved to JSONBin globally');
     } catch (error) {
-        console.error('Error saving state:', error);
-        alert('Warning: Failed to save data to server');
+        console.error('Error saving state to JSONBin:', error);
+        alert('Warning: Failed to save data to JSONBin');
     }
 }
 

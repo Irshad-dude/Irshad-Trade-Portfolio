@@ -53,7 +53,15 @@ app.get('/admin', (req, res) => {
     res.render('admin');
 });
 
-// API: Get data
+// ============================================
+// API ENDPOINTS (LEGACY - Now using JSONBin)
+// ============================================
+// NOTE: The frontend now uses JSONBin.io for global data persistence
+// These endpoints are kept for backward compatibility but are no longer
+// the primary data source. All new data writes go to JSONBin.
+// ============================================
+
+// API: Get data (LEGACY - Use JSONBin instead)
 app.get('/api/data', async (req, res) => {
     try {
         const data = await readStore();
@@ -63,7 +71,7 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
-// API: Save data
+// API: Save data (LEGACY - Use JSONBin instead)
 app.post('/api/data', async (req, res) => {
     try {
         await writeStore(req.body);

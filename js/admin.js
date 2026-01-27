@@ -2,6 +2,7 @@
  * Forex Trader Portfolio - Standalone Admin Portal Logic
  */
 import { CloudinaryService } from './cloudinary-service.js';
+import { JSONBinService } from './jsonbin-service.js';
 
 // DOM Elements
 const DOM = {
@@ -218,33 +219,31 @@ function setupProfileUpload() {
     DOM.dashboard.profileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Show some loading state on the image?
+            // Show loading state
             const originalSrc = DOM.dashboard.currentProfileImg.src;
             DOM.dashboard.currentProfileImg.style.opacity = '0.5';
 
             try {
+                // Upload to Cloudinary
                 const url = await CloudinaryService.uploadImage(file);
 
-                // Update State via API
-                const response = await fetch('/api/data');
-                const data = await response.json();
+                // Fetch current data from JSONBin
+                const data = await JSONBinService.fetchData();
 
-                data.profile = { photo: url, name: 'Irshad Sheikh' }; // Update profile
+                // Update profile photo
+                data.profile = { photo: url, name: data.profile?.name || 'Irshad Sheikh' };
 
-                await fetch('/api/data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+                // Save to JSONBin (global persistence)
+                await JSONBinService.saveData(data);
 
                 // UI Update
                 DOM.dashboard.currentProfileImg.src = url;
                 DOM.dashboard.currentProfileImg.style.opacity = '1';
-                alert('Profile Photo Updated!');
+                alert('Profile Photo Updated Globally!');
 
             } catch (error) {
                 console.error(error);
-                alert('Profile Upload Failed');
+                alert('Profile Upload Failed: ' + error.message);
                 DOM.dashboard.currentProfileImg.style.opacity = '1';
             }
         }
@@ -253,22 +252,22 @@ function setupProfileUpload() {
     DOM.dashboard.removeProfileBtn.addEventListener('click', async () => {
         if (confirm('Remove profile photo?')) {
             try {
-                // Fetch current data first
-                const response = await fetch('/api/data');
-                const data = await response.json();
+                // Fetch current data from JSONBin
+                const data = await JSONBinService.fetchData();
 
-                data.profile.photo = null;
+                // Remove photo
+                if (data.profile) {
+                    data.profile.photo = null;
+                }
 
-                await fetch('/api/data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+                // Save to JSONBin
+                await JSONBinService.saveData(data);
 
                 DOM.dashboard.currentProfileImg.src = '';
+                alert('Profile photo removed');
             } catch (e) {
                 console.error(e);
-                alert('Error removing photo');
+                alert('Error removing photo: ' + e.message);
             }
         }
     });
@@ -276,13 +275,17 @@ function setupProfileUpload() {
 
 async function loadProfile() {
     try {
-        const response = await fetch('/api/data');
-        const data = await response.json();
+        // Fetch from JSONBin (global data)
+        const data = await JSONBinService.fetchData();
         const profile = data.profile || {};
 
         if (profile.photo) {
-            if (DOM.dashboard.currentProfileImg) DOM.dashboard.currentProfileImg.src = profile.photo;
+            if (DOM.dashboard.currentProfileImg) {
+                DOM.dashboard.currentProfileImg.src = profile.photo;
+            }
         }
+
+        console.log('✅ Profile loaded from JSONBin');
     } catch (e) {
         console.error('Error loading profile:', e);
     }
@@ -291,19 +294,20 @@ async function loadProfile() {
 // Shared Data Logic
 async function saveTrade(trade) {
     try {
-        const response = await fetch('/api/data');
-        const data = await response.json();
+        // Fetch current data from JSONBin
+        const data = await JSONBinService.fetchData();
         const trades = data.trades || [];
 
+        // Add new trade to the beginning
         trades.unshift(trade);
 
-        await fetch('/api/data', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...data, trades })
-        });
+        // Save to JSONBin (global persistence)
+        await JSONBinService.saveData({ ...data, trades });
+
+        console.log('✅ Trade saved to JSONBin globally');
     } catch (e) {
         console.error('Error saving trade:', e);
-        alert('Error saving to server');
+        alert('Error saving to JSONBin: ' + e.message);
+        throw e;
     }
 }
