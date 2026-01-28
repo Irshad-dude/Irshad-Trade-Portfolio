@@ -479,10 +479,20 @@ function renderLibrary() {
 
 // Global scope functions
 window.deleteTrade = function (id) {
-    if (confirm('Delete this trade?')) {
+    const password = prompt('Enter password to delete this trade:');
+
+    if (password === null) {
+        // User clicked Cancel
+        return;
+    }
+
+    if (password === 'Gk1d#') {
         state.trades = state.trades.filter(t => t.id !== id);
         saveState();
         renderLibrary();
+        alert('Trade deleted successfully!');
+    } else {
+        alert('Incorrect password. Trade not deleted.');
     }
 };
 
@@ -525,6 +535,8 @@ window.openTradeDetails = function (id) {
 
     // Show Modal
     DOM.modal.container.style.display = 'block';
+    DOM.modal.container.style.opacity = '1';
+    DOM.modal.container.style.pointerEvents = 'auto';
 };
 
 let currentTrade = null;
@@ -533,6 +545,8 @@ function setupModal() {
     // Close Click
     DOM.modal.closeBtn.addEventListener('click', () => {
         DOM.modal.container.style.display = 'none';
+        DOM.modal.container.style.opacity = '0';
+        DOM.modal.container.style.pointerEvents = 'none';
         currentTrade = null;
     });
 
@@ -540,6 +554,8 @@ function setupModal() {
     window.addEventListener('click', (e) => {
         if (e.target === DOM.modal.container) {
             DOM.modal.container.style.display = 'none';
+            DOM.modal.container.style.opacity = '0';
+            DOM.modal.container.style.pointerEvents = 'none';
             currentTrade = null;
         }
     });

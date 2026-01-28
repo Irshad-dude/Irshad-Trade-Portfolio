@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs').promises;
 
 const app = express();
-const PORT = 8123;
+const PORT = process.env.PORT || 8123;
 const DATA_FILE = path.join(__dirname, 'data', 'store.json');
 
 // Middleware
@@ -159,9 +159,14 @@ app.put('/api/jsonbin/data', async (req, res) => {
     }
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
-    console.log(`📊 API endpoint: http://localhost:${PORT}/api/data`);
-    console.log(`🖼️  Image store: http://localhost:${PORT}/store/image`);
-});
+// Start server (only in local development, not on Vercel)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running at http://localhost:${PORT}`);
+        console.log(`📊 API endpoint: http://localhost:${PORT}/api/data`);
+        console.log(`🖼️  Image store: http://localhost:${PORT}/store/image`);
+    });
+}
+
+// Export for Vercel serverless functions
+module.exports = app;
