@@ -1492,11 +1492,11 @@ input[type="range"] {
 /* Badges on Image */
 .badge-outcome {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 5px 12px;
+    top: clamp(8px, 2vw, 15px);
+    right: clamp(8px, 2vw, 15px);
+    padding: clamp(3px, 1vw, 6px) clamp(8px, 2vw, 14px);
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: clamp(0.6rem, 2vw, 0.85rem);
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
@@ -1526,14 +1526,14 @@ input[type="range"] {
 
 .badge-instrument {
     position: absolute;
-    bottom: 15px;
-    left: 15px;
+    bottom: clamp(8px, 2vw, 15px);
+    left: clamp(8px, 2vw, 15px);
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(4px);
-    padding: 4px 10px;
+    padding: clamp(3px, 0.8vw, 5px) clamp(6px, 1.5vw, 12px);
     border-radius: 4px;
     color: var(--primary-gold);
-    font-size: 0.8rem;
+    font-size: clamp(0.6rem, 2vw, 0.85rem);
     font-weight: 600;
     border: 1px solid rgba(212, 175, 55, 0.3);
 }
@@ -1549,7 +1549,7 @@ input[type="range"] {
 
 /* Card Body */
 .card-body {
-    padding: 20px;
+    padding: clamp(12px, 3vw, 20px);
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -1557,8 +1557,8 @@ input[type="range"] {
 
 .card-title {
     font-family: var(--font-heading);
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+    margin-bottom: clamp(4px, 1vw, 8px);
     color: #fff;
     display: flex;
     justify-content: space-between;
@@ -1568,20 +1568,20 @@ input[type="range"] {
 .card-meta {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 0.85rem;
+    gap: clamp(8px, 2vw, 15px);
+    margin-bottom: clamp(8px, 2vw, 15px);
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
     color: var(--text-gray);
 }
 
 .card-meta i {
     color: var(--text-gray);
-    margin-right: 5px;
+    margin-right: clamp(2px, 0.5vw, 5px);
 }
 
 .card-stars {
     color: var(--primary-gold);
-    font-size: 0.8rem;
+    font-size: clamp(0.65rem, 1.8vw, 0.85rem);
 }
 
 /* Card Footer Actions */
@@ -1597,15 +1597,15 @@ input[type="range"] {
 .btn-details {
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    padding: 6px 15px;
+    padding: clamp(4px, 1vw, 6px) clamp(10px, 2vw, 15px);
     border-radius: 20px;
     color: #fff;
-    font-size: 0.8rem;
+    font-size: clamp(0.65rem, 2vw, 0.8rem);
     cursor: pointer;
     transition: 0.2s;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: clamp(3px, 0.5vw, 5px);
 }
 
 .btn-details:hover {
@@ -1812,47 +1812,47 @@ input[type="range"] {
     .modal-content.modal-xl {
         height: 95vh;
     }
-    
+
     .trade-details-col {
         padding: 20px;
     }
-    
+
     .detail-header {
         margin-bottom: 20px;
     }
-    
+
     .detail-title {
         font-size: clamp(1.1rem, 3vh, 1.6rem);
         margin-bottom: 6px;
     }
-    
+
     .detail-grid {
         gap: 15px;
         margin-bottom: 20px;
     }
-    
+
     .detail-label {
         font-size: clamp(0.6rem, 1.2vh, 0.8rem);
         margin-bottom: 4px;
     }
-    
+
     .detail-value {
         font-size: clamp(0.9rem, 2vh, 1.2rem);
     }
-    
+
     .detail-notes {
         padding-top: 15px;
     }
-    
+
     .notes-text {
         font-size: clamp(0.7rem, 1.4vh, 0.9rem);
     }
-    
+
     #modalOutcomeBadge {
         padding: 3px 10px !important;
         font-size: 0.7rem;
     }
-    
+
     .pill-btn {
         padding: 4px 14px;
         font-size: 0.8rem;
@@ -1864,48 +1864,48 @@ input[type="range"] {
     .modal-content.modal-xl {
         height: 98vh;
     }
-    
+
     .trade-details-col {
         padding: 15px;
     }
-    
+
     .detail-header {
         margin-bottom: 15px;
     }
-    
+
     .detail-title {
         font-size: clamp(0.95rem, 3.5vh, 1.3rem);
         line-height: 1.1;
     }
-    
+
     .detail-grid {
         gap: 10px;
         margin-bottom: 15px;
     }
-    
+
     .detail-label {
         font-size: 0.55rem;
         margin-bottom: 2px;
     }
-    
+
     .detail-value {
         font-size: clamp(0.8rem, 2.5vh, 1rem);
     }
-    
+
     .detail-notes {
         padding-top: 10px;
     }
-    
+
     .notes-text {
         font-size: 0.7rem;
         line-height: 1.4;
     }
-    
+
     .image-toggle-pill {
         top: 10px;
         padding: 3px;
     }
-    
+
     .pill-btn {
         padding: 3px 10px;
         font-size: 0.75rem;
@@ -1917,15 +1917,15 @@ input[type="range"] {
     .detail-title {
         font-size: 2.2rem;
     }
-    
+
     .detail-value {
         font-size: 1.4rem;
     }
-    
+
     .detail-label {
         font-size: 0.9rem;
     }
-    
+
     .notes-text {
         font-size: 1rem;
     }
@@ -1938,31 +1938,31 @@ input[type="range"] {
         height: auto;
         max-height: 100%;
     }
-    
+
     .trade-images-col {
         height: 35vh;
         min-height: 180px;
         max-height: 280px;
     }
-    
+
     .trade-details-col {
         padding: 20px;
         max-height: 55vh;
         overflow-y: auto;
     }
-    
+
     .detail-title {
         font-size: clamp(1.2rem, 4vw, 1.6rem);
     }
-    
+
     .detail-grid {
         gap: 20px;
     }
-    
+
     .detail-value {
         font-size: clamp(1rem, 3vw, 1.2rem);
     }
-    
+
     .detail-label {
         font-size: clamp(0.65rem, 2vw, 0.8rem);
     }
@@ -1975,42 +1975,42 @@ input[type="range"] {
         height: 100vh;
         border-radius: 0;
     }
-    
+
     .trade-images-col {
         height: 30vh;
         min-height: 150px;
     }
-    
+
     .trade-details-col {
         padding: 15px;
     }
-    
+
     .detail-title {
         font-size: 1.1rem;
     }
-    
+
     .detail-header {
         margin-bottom: 15px;
     }
-    
+
     .detail-grid {
         gap: 12px;
         margin-bottom: 15px;
     }
-    
+
     .detail-value {
         font-size: 1rem;
     }
-    
+
     .detail-label {
         font-size: 0.6rem;
         letter-spacing: 0.5px;
     }
-    
+
     .notes-text {
         font-size: 0.8rem;
     }
-    
+
     #modalOutcomeBadge {
         padding: 3px 8px !important;
         font-size: 0.65rem;
