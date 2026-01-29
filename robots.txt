@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://tradewithirsh.in/sitemap.xml
+Sitemap: https://www.tradewithirsh.in/sitemap.xml
