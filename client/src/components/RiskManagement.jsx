@@ -1,14 +1,6 @@
 import { useEffect, useRef } from 'react';
-import {
-    Chart as ChartJS,
-    ArcElement,
-    Tooltip,
-    Legend,
-    DoughnutController
-} from 'chart.js';
-
-// Register Chart.js components globally
-ChartJS.register(ArcElement, Tooltip, Legend, DoughnutController);
+// Use auto import to automatically register all Chart.js components
+import { Chart } from 'chart.js/auto';
 
 const RISK_RULES = [
     {
@@ -60,7 +52,7 @@ function RiskManagement() {
             }
 
             const ctx = chartRef.current.getContext('2d');
-            chartInstance.current = new ChartJS(ctx, {
+            chartInstance.current = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Psychology', 'Risk Management', 'Technical Analysis'],
