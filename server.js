@@ -152,9 +152,11 @@ app.put('/api/jsonbin/data', async (req, res) => {
 // ============================================
 // Serve React Frontend (Production)
 // ============================================
-if (process.env.NODE_ENV === 'production') {
-    // Serve React build static files
-    app.use(express.static(path.join(__dirname, 'client/dist')));
+// Serve React build static files (always, for Vercel deployment)
+const reactBuildPath = path.join(__dirname, 'client/dist');
+const fsSync = require('fs');
+if (fsSync.existsSync(reactBuildPath)) {
+    app.use(express.static(reactBuildPath));
 
     // Handle React Router - send all non-API routes to React
     app.get('*', (req, res, next) => {
@@ -162,7 +164,7 @@ if (process.env.NODE_ENV === 'production') {
         if (req.path.startsWith('/api/') || req.path.startsWith('/store/')) {
             return next();
         }
-        res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+        res.sendFile(path.join(reactBuildPath, 'index.html'));
     });
 }
 

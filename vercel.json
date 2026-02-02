@@ -1,32 +1,22 @@
 {
     "version": 2,
-    "buildCommand": "cd client && npm install && npm run build",
-    "builds": [
-        {
-            "src": "server.js",
-            "use": "@vercel/node"
+    "functions": {
+        "server.js": {
+            "runtime": "@vercel/node@3"
         }
-    ],
-    "routes": [
+    },
+    "rewrites": [
         {
-            "src": "/sitemap.xml",
-            "dest": "/sitemap.xml"
+            "source": "/api/(.*)",
+            "destination": "/server.js"
         },
         {
-            "src": "/robots.txt",
-            "dest": "/robots.txt"
+            "source": "/store/(.*)",
+            "destination": "/server.js"
         },
         {
-            "src": "/api/(.*)",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/store/(.*)",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/server.js"
+            "source": "/(.*)",
+            "destination": "/server.js"
         }
     ]
 }
