@@ -13,11 +13,7 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
-// Set EJS as template engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-// Static files
+// Static files (legacy - for backward compatibility)
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -44,14 +40,8 @@ async function writeStore(data) {
     }
 }
 
-// Routes
-app.get('/', (req, res) => {
-    res.render('index');
-});
-
-app.get('/admin', (req, res) => {
-    res.render('admin');
-});
+// React frontend routes are handled by static file serving below
+// API routes follow...
 
 // ============================================
 // API ENDPOINTS (LEGACY - Now using JSONBin)
@@ -159,12 +149,30 @@ app.put('/api/jsonbin/data', async (req, res) => {
     }
 });
 
+// ============================================
+// Serve React Frontend (Production)
+// ============================================
+if (process.env.NODE_ENV === 'production') {
+    // Serve React build static files
+    app.use(express.static(path.join(__dirname, 'client/dist')));
+
+    // Handle React Router - send all non-API routes to React
+    app.get('*', (req, res, next) => {
+        // Skip API routes
+        if (req.path.startsWith('/api/') || req.path.startsWith('/store/')) {
+            return next();
+        }
+        res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+    });
+}
+
 // Start server (only in local development, not on Vercel)
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
         console.log(`🚀 Server running at http://localhost:${PORT}`);
         console.log(`📊 API endpoint: http://localhost:${PORT}/api/data`);
         console.log(`🖼️  Image store: http://localhost:${PORT}/store/image`);
+        console.log(`⚛️  React dev server should run on http://localhost:5173`);
     });
 }
 

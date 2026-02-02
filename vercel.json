@@ -1,9 +1,14 @@
 {
     "version": 2,
+    "buildCommand": "cd client && npm install && npm run build",
     "builds": [
         {
             "src": "server.js",
             "use": "@vercel/node"
+        },
+        {
+            "src": "client/dist/**",
+            "use": "@vercel/static"
         },
         {
             "src": "css/**",
@@ -36,24 +41,16 @@
             "dest": "/robots.txt"
         },
         {
-            "src": "/css/(.*)",
-            "dest": "/css/$1"
-        },
-        {
-            "src": "/js/(.*)",
-            "dest": "/js/$1"
-        },
-        {
-            "src": "/assets/(.*)",
-            "dest": "/assets/$1"
-        },
-        {
             "src": "/api/(.*)",
             "dest": "/server.js"
         },
         {
             "src": "/store/(.*)",
             "dest": "/server.js"
+        },
+        {
+            "src": "/assets/(.*)",
+            "dest": "/client/dist/assets/$1"
         },
         {
             "src": "/(.*)",
