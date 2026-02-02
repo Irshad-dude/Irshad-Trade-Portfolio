@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
-
 const RISK_RULES = [
     {
         number: '01',
@@ -38,7 +36,7 @@ const RISK_RULES = [
     }
 ];
 
-// Static Success Formula data (displayed without Chart.js)
+// Static Success Formula data shown with CSS-only visualization
 const SUCCESS_FORMULA = [
     { label: 'Psychology', value: 40, color: '#D4AF37' },
     { label: 'Risk Management', value: 40, color: '#3498DB' },
@@ -46,74 +44,6 @@ const SUCCESS_FORMULA = [
 ];
 
 function RiskManagement() {
-    const chartRef = useRef(null);
-    const chartInstance = useRef(null);
-    const [chartError, setChartError] = useState(false);
-
-    useEffect(() => {
-        // Dynamic import to avoid build-time issues
-        const initChart = async () => {
-            try {
-                if (!chartRef.current) return;
-
-                // Dynamically import Chart.js
-                const { Chart, registerables } = await import('chart.js');
-                Chart.register(...registerables);
-
-                // Destroy existing chart if any
-                if (chartInstance.current) {
-                    chartInstance.current.destroy();
-                }
-
-                const ctx = chartRef.current.getContext('2d');
-                chartInstance.current = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Psychology', 'Risk Management', 'Technical Analysis'],
-                        datasets: [{
-                            data: [40, 40, 20],
-                            backgroundColor: [
-                                'rgba(212, 175, 55, 0.8)',
-                                'rgba(52, 152, 219, 0.8)',
-                                'rgba(46, 204, 113, 0.8)'
-                            ],
-                            borderColor: [
-                                'rgba(212, 175, 55, 1)',
-                                'rgba(52, 152, 219, 1)',
-                                'rgba(46, 204, 113, 1)'
-                            ],
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    color: '#fff',
-                                    font: { size: 14 }
-                                }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Chart.js initialization error:', error);
-                setChartError(true);
-            }
-        };
-
-        initChart();
-
-        return () => {
-            if (chartInstance.current) {
-                chartInstance.current.destroy();
-            }
-        };
-    }, []);
-
     return (
         <section id="risk" className="section risk-section">
             <div className="container">
@@ -139,7 +69,7 @@ function RiskManagement() {
                         </div>
                     ))}
 
-                    {/* Success Formula Chart Card */}
+                    {/* Success Formula Card - CSS only visualization */}
                     <div className="strategy-card glass strategy-card-wide">
                         <div className="card-header">
                             <span className="step-number">06</span>
@@ -147,37 +77,53 @@ function RiskManagement() {
                         </div>
                         <h3>The Success Formula</h3>
                         <p>Trading success is not just about strategy; it's a balance of psychology, risk, and analysis.</p>
-                        <div className="chart-container" style={{ height: '300px', marginTop: '20px' }}>
-                            {chartError ? (
-                                // Fallback UI when chart fails to load
-                                <div style={{
+
+                        {/* CSS-based visualization instead of Chart.js */}
+                        <div style={{
+                            marginTop: '30px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '15px'
+                        }}>
+                            {SUCCESS_FORMULA.map((item, idx) => (
+                                <div key={idx} style={{
                                     display: 'flex',
-                                    flexDirection: 'column',
                                     alignItems: 'center',
-                                    justifyContent: 'center',
-                                    height: '100%',
                                     gap: '15px'
                                 }}>
-                                    {SUCCESS_FORMULA.map((item, idx) => (
-                                        <div key={idx} style={{
+                                    <div style={{
+                                        width: '50px',
+                                        textAlign: 'right',
+                                        fontSize: '14px',
+                                        color: item.color,
+                                        fontWeight: 'bold'
+                                    }}>
+                                        {item.value}%
+                                    </div>
+                                    <div style={{
+                                        flex: 1,
+                                        height: '30px',
+                                        background: 'rgba(255,255,255,0.1)',
+                                        borderRadius: '15px',
+                                        overflow: 'hidden'
+                                    }}>
+                                        <div style={{
+                                            width: `${item.value}%`,
+                                            height: '100%',
+                                            background: `linear-gradient(90deg, ${item.color}dd, ${item.color}88)`,
+                                            borderRadius: '15px',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: '10px',
-                                            fontSize: '16px'
+                                            paddingLeft: '15px',
+                                            fontSize: '13px',
+                                            fontWeight: '500',
+                                            color: '#fff'
                                         }}>
-                                            <div style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                borderRadius: '50%',
-                                                backgroundColor: item.color
-                                            }}></div>
-                                            <span style={{ color: '#fff' }}>{item.label}: <strong>{item.value}%</strong></span>
+                                            {item.label}
                                         </div>
-                                    ))}
+                                    </div>
                                 </div>
-                            ) : (
-                                <canvas ref={chartRef}></canvas>
-                            )}
+                            ))}
                         </div>
                     </div>
                 </div>
